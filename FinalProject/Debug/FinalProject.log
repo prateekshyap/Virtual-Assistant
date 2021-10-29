@@ -1,27 +1,24 @@
-﻿Build started 10/29/2021 10:00:32 PM.
+﻿Build started 10/29/2021 10:34:32 PM.
      1>Project "E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\FinalProject\FinalProject.vcxproj" on node 2 (build target(s)).
-     1>PrepareForBuild:
-         Creating directory "E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\Debug\".
-       InitializeBuildStatus:
-         Creating "Debug\FinalProject.unsuccessfulbuild" because "AlwaysCreate" was specified.
+     1>InitializeBuildStatus:
+         Touching "Debug\FinalProject.unsuccessfulbuild".
        ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Debug\FinalProject.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
-         stdafx.cpp
+         All outputs are up-to-date.
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\FinalProject.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt FinalProject.cpp
          FinalProject.cpp
+     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(5): warning C4627: '#include "stdlib.h"': skipped when looking for precompiled header use
+                 Add directive to 'StdAfx.h' or rebuild precompiled header
        ManifestResourceCompile:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\FinalProject.exe.embed.manifest.res" Debug\FinalProject_manifest.rc 
+         All outputs are up-to-date.
        Link:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\Debug\FinalProject.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\FinalProject.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\Debug\FinalProject.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\Debug\FinalProject.lib" /MACHINE:X86 Debug\FinalProject.exe.embed.manifest.res
          Debug\FinalProject.obj
          Debug\stdafx.obj
        Manifest:
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\FinalProject.exe.embed.manifest" /manifest Debug\FinalProject.exe.intermediate.manifest
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\FinalProject.exe.embed.manifest.res" Debug\FinalProject_manifest.rc 
+         All outputs are up-to-date.
        LinkEmbedManifest:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\Debug\FinalProject.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\FinalProject.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\Debug\FinalProject.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\Debug\FinalProject.lib" /MACHINE:X86 Debug\FinalProject.exe.embed.manifest.res
-         Debug\FinalProject.obj
-         Debug\stdafx.obj
+         All outputs are up-to-date.
          FinalProject.vcxproj -> E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\Debug\FinalProject.exe
        FinalizeBuildStatus:
          Deleting file "Debug\FinalProject.unsuccessfulbuild".
@@ -30,4 +27,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:23.61
+Time Elapsed 00:00:03.29
