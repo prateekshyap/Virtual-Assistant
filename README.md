@@ -11,6 +11,7 @@
 3. Forward and Backward Process - RJ (to be implemented)<br>
 	Dimension of alpha = NxT<br>
 	Dimension of beta = NxT<br>
+	Take variable names as _alpha_ and _beta_
 
 4. Viterbi Algorithm - PP (implemented)
 
