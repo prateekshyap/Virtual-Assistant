@@ -1,11 +1,16 @@
-int N = 5, M = 32, D = 3, F = 4, T = 85;
+extern int N, M, T;
 
-long double ** A = NULL, ** B = NULL, ** delta = NULL;
-long double * Pi = NULL;
-long double pStar = 0, temp = 0;
-int ** O = NULL, ** psi = NULL;
-int * qStar = NULL;
-FILE * outputFile = NULL;
+//int D = 3, F = 4,
+
+extern long double ** A, ** B, ** delta;
+extern long double * Pi;
+extern long double pStar;
+extern int ** O, ** psi;
+extern int * qStar;
+
+long double temp = 0;
+
+FILE * viterbiOutputFile = NULL;
 
 void runViterbi(int row)
 {
@@ -20,9 +25,9 @@ void runViterbi(int row)
 	for (i = 0; i < N; ++i)
 		psi[i] = new int[T];
 
-	fprintf(outputFile,"\nObservation Sequence:\n");
+	fprintf(viterbiOutputFile,"\nObservation Sequence:\n");
 	for (i = 0; i < T; ++i)
-		fprintf(outputFile,"%d ",O[row][i]);
+		fprintf(viterbiOutputFile,"%d ",O[row][i]);
 
 	//initialization
 	for (i = 0; i < N; ++i)
@@ -88,10 +93,10 @@ void runViterbi(int row)
 
 	/*
 	//modify this part after getting values till this point
-	fprintf(outputFile,"\nValue of P_*:%g\n",pStar);
-	fprintf(outputFile,"q_*:\n");
+	fprintf(viterbiOutputFile,"\nValue of P_*:%g\n",pStar);
+	fprintf(viterbiOutputFile,"q_*:\n");
 	for (t = 0; t < T; ++t)
-		fprintf(outputFile,"%d ",(qStar[t]+1));
-	fprintf(outputFile,"\n");
+		fprintf(viterbiOutputFile,"%d ",(qStar[t]+1));
+	fprintf(viterbiOutputFile,"\n");
 	*/
 }
