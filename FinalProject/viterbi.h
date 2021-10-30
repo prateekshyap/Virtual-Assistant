@@ -1,12 +1,9 @@
-extern int N, M, T;
-
-//int D = 3, F = 4,
-
 extern long double ** A, ** B, ** delta;
 extern long double * Pi;
 extern long double pStar;
 extern int ** O, ** psi;
 extern int * qStar;
+extern int N, M, T;
 
 long double temp = 0;
 
