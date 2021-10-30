@@ -2,8 +2,17 @@
 
 # Different header files to be included-
 
-1. Vowel Recognition Assignment - RJ (implemented)
+1. Vowel Recognition Assignment - RJ (implemented) <br>
+	Please upload the code of this assignment
+
 2. LBG - PP (implemented)
-3. Forward and Backward Process - RJ (to be implemented)
+
+
+3. Forward and Backward Process - RJ (to be implemented)<br>
+	Dimension of alpha = NxT<br>
+	Dimension of beta = NxT<br>
+
 4. Viterbi Algorithm - PP (implemented)
-5. Baum Welch Method - PP (to be implemented)
+
+
+5. Baum Welch Method - PP (implementation in progress)
