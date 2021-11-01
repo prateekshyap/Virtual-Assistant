@@ -25,7 +25,9 @@ long double * Pi = NULL; //Initial probability
 long double * PiComplement = NULL; //updated Pi
 
 
-long double pStar = 0; //Probability of model
+long double pOfOGivenLambda = 0; //probability of an observation sequence given the model lambda
+
+long double pStar = 0; //probability of the state sequence being helpful in modelling
 
 
 int ** O = NULL; //Observation sequences

@@ -1,9 +1,7 @@
 extern long double *** xi;
 extern long double ** gamma;
 extern long double ** AComplement, ** BComplement;
-
 extern long double * PiComplement;
-
 extern int N, M, T;
 
 long double ** expectedTransitionsFromSiToSj = NULL, ** expectedObservationOfKthSymbolAtSj = NULL;
