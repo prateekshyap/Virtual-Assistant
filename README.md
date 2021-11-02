@@ -18,4 +18,6 @@
 
 # Current status
 
-This code is now able to take input for A, B, O and Pi and generate A', B' and Pi' for the given O.
+~~This code is now able to take input for A, B, O and Pi and generate A', B' and Pi' for the given O.~~
+
+This code is now able to take input for A, B, O and Pi and converge the model to an optimal one for each observation sequence.
