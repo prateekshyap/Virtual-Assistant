@@ -1,5 +1,3 @@
-# Speech-Processing-Final-Project-To-be-renamed-later-
-
 # Different header files to be included-
 
 1. Vowel Recognition Assignment - RJ (implemented)
