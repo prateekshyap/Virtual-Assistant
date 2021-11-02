@@ -29,11 +29,15 @@ long double pOfOGivenLambda = 0; //probability of an observation sequence given 
 
 long double pStar = 0; //probability of the state sequence being helpful in modelling
 
+//long double temp = 0; //temporary long double variable
 
-int ** O = NULL; //Observation sequences
+long double floorB = 1e-30;
+
 
 int ** psi = NULL; //Gets generated in Viterbi.h
 
+
+int * O = NULL; //Observation sequences
 
 int * qStar = NULL; //State sequence
 
@@ -43,3 +47,7 @@ int N = 5; //number of states
 int M = 32; //codebook size or number of observations
 
 int T = 85; //size of observation sequence
+
+FILE * dataOutputFile = NULL; //output file for required output
+
+FILE * modelOutputFile = NULL; //output file for model

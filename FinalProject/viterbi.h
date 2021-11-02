@@ -1,15 +1,14 @@
 extern long double ** A, ** B, ** delta;
 extern long double * Pi;
 extern long double pStar;
-extern int ** O, ** psi;
+extern int * O, ** psi;
 extern int * qStar;
 extern int N, M, T;
+extern FILE * dataOutputFile, * modelOutputFile;
 
 long double temp = 0;
 
-FILE * viterbiOutputFile = NULL;
-
-void runViterbi(int row)
+void runViterbi()
 {
 	int i = 0, j = 0, t = 0;
 	delta = new long double *[N];
@@ -22,14 +21,10 @@ void runViterbi(int row)
 	for (i = 0; i < N; ++i)
 		psi[i] = new int[T];
 
-	fprintf(viterbiOutputFile,"\nObservation Sequence:\n");
-	for (i = 0; i < T; ++i)
-		fprintf(viterbiOutputFile,"%d ",O[row][i]);
-
 	//initialization
 	for (i = 0; i < N; ++i)
 	{
-		delta[i][0] = Pi[i]*B[i][O[row][0]-1];
+		delta[i][0] = Pi[i]*B[i][O[0]-1];
 		psi[i][0] = 0;
 	}
 
@@ -49,7 +44,7 @@ void runViterbi(int row)
 					psi[j][t] = i;
 				}
 			}
-			delta[j][t] *= B[j][O[row][t]-1];
+			delta[j][t] *= B[j][O[t]-1];
 		}
 	}
 
@@ -88,12 +83,24 @@ void runViterbi(int row)
 	for (t = T-2; t >= 0; --t)
 		qStar[t] = psi[qStar[t+1]][t+1];
 
-	/*
-	//modify this part after getting values till this point
-	fprintf(viterbiOutputFile,"\nValue of P_*:%g\n",pStar);
-	fprintf(viterbiOutputFile,"q_*:\n");
+	//print into file
+	fprintf(modelOutputFile,"\n\ndelta matrix-\n");
 	for (t = 0; t < T; ++t)
-		fprintf(viterbiOutputFile,"%d ",(qStar[t]+1));
-	fprintf(viterbiOutputFile,"\n");
-	*/
+	{
+		for (i = 0; i < N; ++i)
+			fprintf(modelOutputFile,"%g\t",delta[i][t]);
+		fprintf(modelOutputFile,"\n");
+	}
+	fprintf(modelOutputFile,"\n\npsi matrix-\n");
+	for (t = 0; t < T; ++t)
+	{
+		for (i = 0; i < N; ++i)
+			fprintf(modelOutputFile,"%d\t",psi[i][t]);
+		fprintf(modelOutputFile,"\n");
+	}
+	fprintf(dataOutputFile,"\nValue of P_*:%g\n",pStar);
+	fprintf(dataOutputFile,"q_*:\n");
+	for (t = 0; t < T; ++t)
+		fprintf(dataOutputFile,"%d\t",(qStar[t]+1));
+	fprintf(dataOutputFile,"\n");
 }
