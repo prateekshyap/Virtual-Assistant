@@ -17,4 +17,6 @@ This code is now able to train a model for the given words and recognize a singl
 
 
 ## __Please add image display feature or youtube link feature for any given word.__
-The code snippet should be able to use a ``` char * ``` and display some image or video related to it. 
+The code snippet should be able to use a ``` char * ``` and display some image or video related to it.<br>
+Run the code in a different cpp file and paste the code in ```FinalProject.cpp```.<br>
+Do not modify existing code.
