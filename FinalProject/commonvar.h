@@ -43,6 +43,8 @@ Other variables
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 */
 
+long double ** codebook = NULL; //codebook
+
 long double pOfOGivenLambda = 0; //probability of an observation sequence given the model lambda
 
 long double pStar = 0; //probability of the state sequence being helpful in modelling
@@ -61,6 +63,8 @@ int * qStar = NULL; //State sequence
 
 int * qStarComplement = NULL; //State sequence for the updated model
 
+char * resultWord = NULL;
+
 
 /*
 //////////////////////////////////////
@@ -68,12 +72,19 @@ Sizes
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 */
 
-int N = 5; //number of states
+int N = 0; //number of states
 
-int M = 32; //codebook size or number of observations
+int M = 0; //codebook size or number of observations
 
-int T = 85; //size of observation sequence
+int T = 100; //size of observation sequence
 
+int R = 0; //read it from file, it will store the number of words currently present in the universe
+
+int duration = 0; //read it from file, it will store the duration of the recording to be considered
+
+int p = 12; //size of Codebook vectors
+
+int universeSize = 0; //size of the universe
 
 /*
 ///////////////////////////////////////
@@ -86,6 +97,10 @@ FILE * AComplementFile = NULL; //new A will be printed
 FILE * BComplementFile = NULL; //new B will be printed
 
 FILE * PiComplementFile = NULL; //new Pi will be printed
+
+
+
+
 
 
 

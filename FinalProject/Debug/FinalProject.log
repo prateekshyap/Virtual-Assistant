@@ -1,97 +1,16 @@
-﻿Build started 11/3/2021 1:43:42 AM.
+﻿Build started 11/6/2021 10:35:29 PM.
      1>Project "E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\FinalProject\FinalProject.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\FinalProject.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          All outputs are up-to-date.
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\FinalProject.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt FinalProject.cpp
-         FinalProject.cpp
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(125): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(126): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(127): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(128): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(129): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(130): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(132): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : see declaration of 'fopen'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(141): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(253) : see declaration of 'fscanf'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(153): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(253) : see declaration of 'fscanf'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(163): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(253) : see declaration of 'fscanf'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(165): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(253) : see declaration of 'fscanf'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(173): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(253) : see declaration of 'fscanf'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(182): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(184): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(185): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(186): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(187): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(188): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(189): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(190): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(192): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(193): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(194): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(195): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(196): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(197): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(198): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(200): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(201): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(202): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(203): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(204): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(205): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(206): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(110) : see declaration of 'strcat'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(208): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : see declaration of 'fopen'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(209): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : see declaration of 'fopen'
-     1>e:\iitg\courses\1st sem\speech processing\projects\finalproject\finalproject\finalproject.cpp(210): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(234) : see declaration of 'fopen'
+         All outputs are up-to-date.
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\Debug\FinalProject.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\FinalProject.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\Debug\FinalProject.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\Debug\FinalProject.lib" /MACHINE:X86 Debug\FinalProject.exe.embed.manifest.res
-         Debug\FinalProject.obj
-         Debug\stdafx.obj
+         All outputs are up-to-date.
        Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\FinalProject.exe.embed.manifest" /manifest Debug\FinalProject.exe.intermediate.manifest
          All outputs are up-to-date.
-       LinkEmbedManifest:
-         All outputs are up-to-date.
-         FinalProject.vcxproj -> E:\IITG\Courses\1st sem\Speech Processing\Projects\FinalProject\Debug\FinalProject.exe
        FinalizeBuildStatus:
          Deleting file "Debug\FinalProject.unsuccessfulbuild".
          Touching "Debug\FinalProject.lastbuildstate".
@@ -99,4 +18,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.04
+Time Elapsed 00:00:00.22

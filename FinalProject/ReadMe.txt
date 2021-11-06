@@ -38,3 +38,5 @@ AppWizard uses "TODO:" comments to indicate parts of the source code you
 should add to or customize.
 
 /////////////////////////////////////////////////////////////////////////////
+
+>Recording_Module.exe 3 FinalProject/WAVfiles/5/9.wav FinalProject/FinalProject/HMM/5/9.txt

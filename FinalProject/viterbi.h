@@ -26,12 +26,12 @@ void runViterbi(int status)
 		{
 			for (j = 0; j < N; ++j)
 			{
-				delta[j][t] = 0;
+				delta[j][t] = 0; //suspicious
 				psi[j][t] = -1;
 				for (i = 0; i < N; ++i)
 				{
 					temp = delta[i][t-1]*A[i][j];
-					if (temp > delta[j][t])
+					if (temp >= delta[j][t]) //suspicious
 					{
 						delta[j][t] = temp;
 						psi[j][t] = i;
@@ -46,7 +46,7 @@ void runViterbi(int status)
 		pStar = 0;
 		for (i = 0; i < N; ++i)
 		{
-			if (delta[i][T-1] > pStar)
+			if (delta[i][T-1] >= pStar) //suspicious
 			{
 				pStar = delta[i][T-1];
 				qStar[T-1] = i;
@@ -57,7 +57,7 @@ void runViterbi(int status)
 		for (t = T-2; t >= 0; --t)
 			qStar[t] = psi[qStar[t+1]][t+1];
 
-		printf("pStar = %g\n",pStar);
+		//printf("pStar = %g\n",pStar);
 	}
 	else if (status == 1)
 	{
@@ -73,12 +73,12 @@ void runViterbi(int status)
 		{
 			for (j = 0; j < N; ++j)
 			{
-				delta[j][t] = 0;
+				delta[j][t] = 0; //suspicious
 				psi[j][t] = -1;
 				for (i = 0; i < N; ++i)
 				{
 					temp = delta[i][t-1]*AComplement[i][j];
-					if (temp > delta[j][t])
+					if (temp >= delta[j][t]) //suspicious
 					{
 						delta[j][t] = temp;
 						psi[j][t] = i;
@@ -93,7 +93,7 @@ void runViterbi(int status)
 		pStarComplement = 0;
 		for (i = 0; i < N; ++i)
 		{
-			if (delta[i][T-1] > pStarComplement)
+			if (delta[i][T-1] >= pStarComplement) //suspicious
 			{
 				pStarComplement = delta[i][T-1];
 				qStarComplement[T-1] = i;
@@ -102,9 +102,10 @@ void runViterbi(int status)
 
 		//backtracking
 		for (t = T-2; t >= 0; --t)
+		{
+			//printf("%d ",qStarComplement[t+1]);
 			qStarComplement[t] = psi[qStarComplement[t+1]][t+1];
-
-		printf("pStarComplement = %g\n",pStarComplement);
+		}
 	}
 }
 
