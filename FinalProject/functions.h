@@ -346,7 +346,7 @@ void generateObservationSequences(char * folder, char * digits[], char * files[]
 			fclose(file);
 			//Minimum index
 			min = 1e30; //reset the minimum
-			for (j = 0; j < K; ++j)
+			for (j = 0; j < M; ++j)
 			{
 				if (min > distances[j])
 				{

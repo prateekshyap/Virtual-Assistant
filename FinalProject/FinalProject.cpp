@@ -45,7 +45,7 @@ extern int T, N, M, R, duration, p;
 int D = 0, F = 0;
 int ** fullO = NULL;
 
-void trainBeginningModel();
+void trainBeginningModel(int);
 void recognize(char *, char **, char **, char **, int, int, int);
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -53,6 +53,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	int d = 0, r = 0, range = 0, i = 0;
 	char * temp = NULL;
 	int trainingStatus = -1; //set a variable to know if the model has to be trained or not
+	int buildingStatus = -1; //set a variable to know if codebook needs to be built or not
 	FILE * file = fopen("data/info.txt","r"); //open info.txt
 	fscanf(file,"%d",&trainingStatus); //read from the file
 	fclose(file);
@@ -62,7 +63,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	fscanf(file,"%d",&duration);
 	fclose(file);
 
-	//read N and M
+	//read N, M, range of amplitudes
 	file = fopen("data/N.txt","r");
 	fscanf(file,"%d",&N);
 	fclose(file);
@@ -95,9 +96,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	if (trainingStatus == 0) //if file says 0
 	{
 		printf("Training the initial Model\n\n");
-		trainBeginningModel(); //call the model training function
+		file = fopen("data/build.txt","r");
+		fscanf(file,"%d",&buildingStatus);
+		fclose(file);
+		trainBeginningModel(buildingStatus); //call the model training function
 		file = fopen("data/info.txt","w");
-		fprintf(file,"1");
+		fprintf(file,"1"); //replace 0 with 1 to avoid training in further executions
 		fclose(file);
 		printf("\nTraining completed\n\n");
 	}
@@ -136,19 +140,19 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	
 	//testing
-	/*
+	
 	char command[200];
 	sprintf(command,"Recording_Module.exe %d data/o.wav data/o.txt",duration);
 	std :: system(command);
 	recognize(folder, digits, files, dataFiles, D, R, range);
 	printf("You spoke %s",resultWord);
-	*/
+	
 
 	printf("Breakpoint\n");
 	return 0;
 }
 
-void trainBeginningModel()
+void trainBeginningModel(int buildingStatus)
 {
 	/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	Variables
@@ -218,12 +222,14 @@ void trainBeginningModel()
 	files[2] = "O";
 	files[3] = "Pi";
 	resetModel(folder, digits, dataFiles, D, R);
-	printf("Building the Universe\n");
-	buildUniverse(folder, digits, dataFiles, D, R, range);
-	printf("\n\nUniverse building completed\n\nBuilding the Codebook\n");
-	buildCodebook();
-	printf("\n\nCodebook building completed\n");
-
+	if (buildingStatus == 0)
+	{
+		printf("Building the Universe\n");
+		buildUniverse(folder, digits, dataFiles, D, R, range);
+		printf("\n\nUniverse building completed\n\nBuilding the Codebook\n");
+		buildCodebook();
+		printf("\n\nCodebook building completed\n");
+	}
 	
 	/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	Define variables for HMM
@@ -395,6 +401,34 @@ void trainBeginningModel()
 
 				//set new O
 				O = fullO[k];
+				
+				/*
+				//reset A
+				for (i = 0; i < N; ++i)
+				{
+					for (j = 0; j < N; ++j)
+						printf("%g ",A[i][j]);
+					printf("\n");
+				}
+			
+				//reset B
+				for (i = 0; i < N; ++i)
+				{
+					for (m = 0; m < M; ++m)
+						printf("%g ",B[i][j]);
+					printf("\n");
+				}
+			
+				//reset Pi
+				for (j = 0; j < N; ++j)
+					printf("%g ",Pi[j]);
+				printf("\n");
+
+				for (j = 0; j < T; ++j)
+					printf("%d ",O[j]);
+				printf("\n");
+				*/
+
 
 				isUpdated = true;
 
