@@ -23,3 +23,28 @@ Do not modify existing code.
 
 ## command to record-
 ```Recording_Module.exe 3 WAVFiles/car/0.wav FinalProject/HMM/car/0.txt```
+
+## Recordings-
+
+### Recorded - 
+
+null<br>
+aeroplane<br>
+apple<br>
+autorickshaw<br>
+bicycle<br>
+bike<br>
+bus<br>
+car<br>
+
+### Pending recordings -
+
+cat<br>
+dog<br>
+scooter<br>
+tandem<br>
+train<br>
+tram<br>
+truck<br>
+
+Please record the __Recorded__ words first, in the above sequence, 0.txt to 9.txt. 10.txt to 19.txt already added.

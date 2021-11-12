@@ -52,11 +52,13 @@ void postProcess();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	int d = 0, r = 0, range = 0, i = 0, testChoice = 1, userChoice = -1;
+	int d = 0, r = 0, range = 0, i = 0, testChoice = 1, userChoice = -1, flag = 1;
 	char * temp = NULL;
 	int trainingStatus = -1; //set a variable to know if the model has to be trained or not
 	int buildingStatus = -1; //set a variable to know if codebook needs to be built or not
-	
+	char command[200];
+	char * testFileName = NULL, * userString = NULL;
+
 	range = preProcess();
 
 	//initialize
@@ -134,12 +136,23 @@ int _tmain(int argc, _TCHAR* argv[])
 		switch (userChoice)
 		{
 		case 1:
-
+			printf("Enter the word for which you want to train-\n");
+			scanf("%s",&userString);
+			flag = 1;
+			for (i = 0; i < D; ++i)
+				if (strcmp(userString,digits[i]))
+				{
+					flag = 0;
+					break;
+				}
+			if (flag == 0) //existing word
+			{}
+			else //new word
+			{}
 			break;
 
 		case 2:
-			char command[200];
-			char * testFileName = "data/o.txt";
+			testFileName = "data/o.txt";
 			sprintf(command,"Recording_Module.exe %d data/o.wav data/o.txt",duration);
 			std :: system(command);
 			recognize(folder, digits, files, dataFiles, D, R, range, testFileName);
