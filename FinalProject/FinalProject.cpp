@@ -46,34 +46,19 @@ int D = 0, F = 0;
 int ** fullO = NULL;
 
 void trainBeginningModel(int);
-void recognize(char *, char **, char **, char **, int, int, int);
+void generateTestReport(char *, char **, char **, int);
+int preProcess();
+void postProcess();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	int d = 0, r = 0, range = 0, i = 0;
+	int d = 0, r = 0, range = 0, i = 0, testChoice = 1, userChoice = -1;
 	char * temp = NULL;
 	int trainingStatus = -1; //set a variable to know if the model has to be trained or not
 	int buildingStatus = -1; //set a variable to know if codebook needs to be built or not
-	FILE * file = fopen("data/info.txt","r"); //open info.txt
-	fscanf(file,"%d",&trainingStatus); //read from the file
-	fclose(file);
 	
-	//read the duration
-	file = fopen("data/duration.txt","r");
-	fscanf(file,"%d",&duration);
-	fclose(file);
+	range = preProcess();
 
-	//read N, M, range of amplitudes
-	file = fopen("data/N.txt","r");
-	fscanf(file,"%d",&N);
-	fclose(file);
-	file = fopen("data/M.txt","r");
-	fscanf(file,"%d",&M);
-	fclose(file);
-	file = fopen("data/range.txt","r");
-	fscanf(file,"%d",&range);
-	fclose(file);
-	
 	//initialize
 	A = new long double *[N]; //A Matrix
 	B = new long double *[N]; //B Matrix
@@ -92,6 +77,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	for (i = 0; i < N; ++i)
 		beta[i] = new long double[T];
 
+	FILE * file = fopen("data/info.txt","r"); //open info.txt
+	fscanf(file,"%d",&trainingStatus); //read from the file
+	fclose(file);
 
 	if (trainingStatus == 0) //if file says 0
 	{
@@ -129,27 +117,101 @@ int _tmain(int argc, _TCHAR* argv[])
 	files[1] = "B";
 	files[2] = "Pi";
 
-	//switch case will be added here for all kind of operations (training, testing etc)
-	
-	//live training
+	//operations
+	while (true)
+	{
+		printf("============================================================\n");
+		printf("                   Tutorial for Kids\n");
+		printf("============================================================\n");
+		printf("1 - Training mode\n");
+		printf("2 - Testing mode\n");
+		printf("3 - Rebuild the model\n");
+		printf("4 - Quit\n");
+		printf("Enter the corresponding number-\n");
 
-	
-	
-	//add image display feature or youtube link feature here, don't modify the existing code
+		scanf("%d",&userChoice);
 
-	
-	
-	//testing
-	
-	char command[200];
-	sprintf(command,"Recording_Module.exe %d data/o.wav data/o.txt",duration);
-	std :: system(command);
-	recognize(folder, digits, files, dataFiles, D, R, range);
-	printf("You spoke %s",resultWord);
-	
+		switch (userChoice)
+		{
+		case 1:
 
-	printf("Breakpoint\n");
+			break;
+
+		case 2:
+			char command[200];
+			char * testFileName = "data/o.txt";
+			sprintf(command,"Recording_Module.exe %d data/o.wav data/o.txt",duration);
+			std :: system(command);
+			recognize(folder, digits, files, dataFiles, D, R, range, testFileName);
+			printf("You spoke %s\n",resultWord);
+			/* Put image display feature here */
+			break;
+
+		case 3:
+			range = preProcess();
+			trainBeginningModel(0);
+			file = fopen("data/D.txt","r");
+			fscanf(file,"%d",&D);
+			folder = "HMM/";
+			digits = new char * [D];
+			for (d = 0; d < D; ++d)
+				digits[d] = (char *)malloc(sizeof(char *));
+			for (d = 0; d < D; ++d)
+				fscanf(file,"%s",digits[d]);
+			fclose(file);
+			dataFiles = new char * [R];
+			for (r = 0; r < R; ++r)
+				dataFiles[r] = (char *)malloc(sizeof(char *));
+			for (r = 0; r < R; ++r)
+				sprintf(dataFiles[r],"%d",r);
+			files = new char * [4];
+			for (r = 0; r < 3; ++r)
+				files[r] = (char *)malloc(sizeof(char *));
+			files[0] = "A";
+			files[1] = "B";
+			files[2] = "Pi";
+			break;
+
+		case 4:
+			printf("Thank you for using the app.");
+			return 0;
+
+		default:
+			printf("Invalid input! Please try again!");
+		}
+	}
+	
 	return 0;
+}
+
+int preProcess()
+{	
+	int range = 0;
+
+	//read the duration
+	FILE * file = fopen("data/duration.txt","r");
+	fscanf(file,"%d",&duration);
+	fclose(file);
+
+	//read N, M, range of amplitudes
+	file = fopen("data/N.txt","r");
+	fscanf(file,"%d",&N);
+	fclose(file);
+	file = fopen("data/M.txt","r");
+	fscanf(file,"%d",&M);
+	fclose(file);
+	file = fopen("data/range.txt","r");
+	fscanf(file,"%d",&range);
+	fclose(file);
+	file = fopen("data/F.txt","r");
+	fscanf(file,"%d",&R);
+	fclose(file);
+
+	return range;
+}
+
+void postProcess()
+{
 }
 
 void trainBeginningModel(int buildingStatus)
@@ -234,9 +296,7 @@ void trainBeginningModel(int buildingStatus)
 	/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	Define variables for HMM
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-
 	//define everything
-
 	delta = new long double *[N];
 	psi = new int *[N];
 	qStar = new int[T];
@@ -295,16 +355,17 @@ void trainBeginningModel(int buildingStatus)
 	Build the initial HMM
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 	//run the hmm building process
-	printf("\nBuilding the model\n");
-	while (modelCount != modelLoop)
+	printf("\nBuilding the model\n\n");
+	while (modelCount != modelLoop) //for a few times
 	{
 		++modelCount;
 		//printf("%d\n",modelCount);
-		//converge the model for each observatio sequence
-		for (d = 0; d < D; ++d)
+		//converge the model for each observation sequence
+		for (d = 0; d < D; ++d) //for each digit
 		{
 			generateObservationSequences(folder, digits, dataFiles, d, R, range); //generate the full observation sequence
-			for (f = 0; f < 4; ++f)
+			//read the model
+			for (f = 0; f < 4; ++f) //for each file
 			{
 				strcpy(fileName,folder);
 				strcat(fileName,digits[d]);
@@ -312,7 +373,7 @@ void trainBeginningModel(int buildingStatus)
 				strcat(fileName,files[f]);
 				strcat(fileName,".txt");
 			
-				file = fopen(fileName,"r");
+				file = fopen(fileName,"r"); //open the file and read it
 
 				if (f == 0)
 				{
@@ -356,6 +417,7 @@ void trainBeginningModel(int buildingStatus)
 			
 				fclose(file);
 			}
+
 			for (k = 0; k < R; ++k)
 			{
 				sprintf(temp,"%d",k);
@@ -401,34 +463,6 @@ void trainBeginningModel(int buildingStatus)
 
 				//set new O
 				O = fullO[k];
-				
-				/*
-				//reset A
-				for (i = 0; i < N; ++i)
-				{
-					for (j = 0; j < N; ++j)
-						printf("%g ",A[i][j]);
-					printf("\n");
-				}
-			
-				//reset B
-				for (i = 0; i < N; ++i)
-				{
-					for (m = 0; m < M; ++m)
-						printf("%g ",B[i][j]);
-					printf("\n");
-				}
-			
-				//reset Pi
-				for (j = 0; j < N; ++j)
-					printf("%g ",Pi[j]);
-				printf("\n");
-
-				for (j = 0; j < T; ++j)
-					printf("%d ",O[j]);
-				printf("\n");
-				*/
-
 
 				isUpdated = true;
 
@@ -613,496 +647,3 @@ void trainBeginningModel(int buildingStatus)
 	}
 	printf("\n\nModel building completed\n\n");
 }
-
-
-
-/*
-
-////////////////////////////////////////////////////
-Working main code for viterbi
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-char * folders[] = {"Samples/Digit ","Samples/Digit ","Samples/Digit "};
-	char * digits[] = {"1","7","8"};
-	char * files[] = {"A_","B_","obs_seq_","Pi_"};
-
-	char * buffer = new char[1024];
-	char skipLine[1024];
-	A = new long double *[N]; //A Matrix
-	B = new long double *[N]; //B Matrix
-	O = new int *[N]; //Observation Sequence
-	Pi = new long double[N]; //Pi Array
-	int i = 0, j = 0, k = 0, r = 0, c = 0, d = 0, f = 0, t = 0;
-	char fileName[100], outputFileName[100];
-	FILE * file = NULL;
-	
-	for (i = 0; i < N; ++i)
-		A[i] = new long double[N];
-	for (i = 0; i < N; ++i)
-		B[i] = new long double[M];
-	for (i = 0; i < N; ++i)
-		O[i] = new int[T];
-
-	for (d = 0; d < D; ++d)
-	{
-		strcpy(outputFileName,folders[d]);
-		strcat(outputFileName,digits[d]);
-		strcat(outputFileName,"/");
-		strcat(outputFileName,"Output.txt");
-
-		dataOutputFile = fopen(outputFileName,"w+");
-		printf("-----------------------------------------------------------\n");
-		printf("                         Digit %s\n",digits[d]);
-		printf("-----------------------------------------------------------\n");
-		fprintf(dataOutputFile,"-----------------------------------------------------------\n");
-		fprintf(dataOutputFile,"                         Digit %s\n",digits[d]);
-		fprintf(dataOutputFile,"-----------------------------------------------------------\n");
-
-		for (f = 0; f < F; ++f)
-		{
-			strcpy(fileName,folders[d]);
-			strcat(fileName,digits[d]);
-			strcat(fileName,"/");
-			strcat(fileName,files[f]);
-			strcat(fileName,digits[d]);
-			strcat(fileName,".txt");
-			
-			file = fopen(fileName,"r");
-
-			if (f == 0)
-			{
-				printf("Reading %s for A matrix\n",fileName);
-				fprintf(dataOutputFile,"Reading %s for A matrix\n",fileName);
-				for (i = 0; i < N; ++i)
-					for (j = 0; j < N; ++j)
-						fscanf(file,"%lf",&A[i][j]);
-
-				/*
-				//remove this comment to print on console
-				for (i = 0; i < N; ++i)
-				{
-					for (j = 0; j < N; ++j)
-						printf("%.20lf\t", A[i][j]);
-					printf("\n");
-				}
-				
-			}
-			else if (f == 1)
-			{
-				printf("Reading %s for B matrix\n",fileName);
-				fprintf(dataOutputFile,"Reading %s for B matrix\n",fileName);
-				for (i = 0; i < N; ++i)
-					for (j = 0; j < M; ++j)
-						fscanf(file,"%lf",&B[i][j]);
-				/*
-				//remove this comment to print on console
-				for (i = 0; i < N; ++i)
-				{
-					for (j = 0; j < M; ++j)
-						printf("%.20lf\t", B[i][j]);
-					printf("\n");
-				}
-				
-			}
-			else if (f == 2)
-			{
-				printf("Reading %s for observation sequences\n",fileName);
-				fprintf(dataOutputFile,"Reading %s for observation sequences\n",fileName);
-				for (i = 0; i < 5; ++i)
-				{
-					fscanf(file,"%s %d %s",&skipLine,&k,&skipLine);
-					for (j = 0; j < T; ++j)
-						fscanf(file,"%d",&O[i][j]);
-				}
-
-				/*
-				//remove this comment to print on console
-				for (i = 0; i < N; ++i)
-				{
-					for (j = 0; j < T; ++j)
-						printf("%d ",O[i][j]);
-					printf("\n");
-				}
-				
-			}
-			else if (f == 3)
-			{
-				printf("Reading %s for Pi\n",fileName);
-				fprintf(dataOutputFile,"Reading %s for Pi\n",fileName);
-				for (i = 0; i < N; ++i)
-					fscanf(file,"%lf",&Pi[i]);
-
-				/*
-				//remove this comment to print on console
-				for (i = 0; i < N; ++i)
-					printf("%.20lf\t",Pi[i]);
-				printf("\n");
-				
-			}
-			
-			fclose(file);
-		}
-		for (i = 0; i < N; ++i)
-			runViterbi(i);
-		printf("Required outputs are printed in %s\n",outputFileName);
-		fclose(dataOutputFile);
-	}
-
-	printf("Breakpoint\n");
-	return 0;
-
-
-////////////////////////////////////////////////////
-Working main code for three problems to verify data
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-
-char * folders[] = {"Samples/Digit ","Samples/Digit ","Samples/Digit "};
-	char * digits[] = {"1","7","8"};
-	char * files[] = {"A_","B_","obs_seq_","Pi_"};
-
-	char * buffer = new char[1024];
-	char skipLine[1024];
-	A = new long double *[N]; //A Matrix
-	B = new long double *[N]; //B Matrix
-	O = new int [N]; //Observation Sequence
-	fullO = new int *[N];
-	Pi = new long double[N]; //Pi Array
-	int i = 0, j = 0, k = 0, r = 0, c = 0, d = 0, f = 0, t = 0;
-	char fileName[100], dataOutputFileName[100], modelOutputFileName[100];
-	FILE * file = NULL;
-	
-	for (i = 0; i < N; ++i)
-		A[i] = new long double[N];
-	for (i = 0; i < N; ++i)
-		B[i] = new long double[M];
-	for (i = 0; i < N; ++i)
-		fullO[i] = new int[T];
-
-	for (d = 0; d < D; ++d)
-	{
-		strcpy(dataOutputFileName,folders[d]);
-		strcat(dataOutputFileName,digits[d]);
-		strcat(dataOutputFileName,"/");
-		strcat(dataOutputFileName,"DataOutput.txt");
-
-		strcpy(modelOutputFileName,folders[d]);
-		strcat(modelOutputFileName,digits[d]);
-		strcat(modelOutputFileName,"/");
-		strcat(modelOutputFileName,"ModelOutput.txt");
-
-		dataOutputFile = fopen(dataOutputFileName,"w+");
-		modelOutputFile = fopen(modelOutputFileName,"w+");
-		printf("-----------------------------------------------------------\n");
-		printf("                         Digit %s\n",digits[d]);
-		printf("-----------------------------------------------------------\n");
-		fprintf(dataOutputFile,"-----------------------------------------------------------\n");
-		fprintf(dataOutputFile,"                         Digit %s\n",digits[d]);
-		fprintf(dataOutputFile,"-----------------------------------------------------------\n");
-		fprintf(modelOutputFile,"-----------------------------------------------------------\n");
-		fprintf(modelOutputFile,"                         Digit %s\n",digits[d]);
-		fprintf(modelOutputFile,"-----------------------------------------------------------\n");
-
-		for (f = 0; f < F; ++f)
-		{
-			strcpy(fileName,folders[d]);
-			strcat(fileName,digits[d]);
-			strcat(fileName,"/");
-			strcat(fileName,files[f]);
-			strcat(fileName,digits[d]);
-			strcat(fileName,".txt");
-			
-			file = fopen(fileName,"r");
-
-			if (f == 0)
-			{
-				printf("Reading %s for A matrix\n",fileName);
-				fprintf(dataOutputFile,"Reading %s for A matrix\n",fileName);
-				for (i = 0; i < N; ++i)
-					for (j = 0; j < N; ++j)
-						fscanf(file,"%lf",&A[i][j]);	
-			}
-			else if (f == 1)
-			{
-				printf("Reading %s for B matrix\n",fileName);
-				fprintf(dataOutputFile,"Reading %s for B matrix\n",fileName);
-				for (i = 0; i < N; ++i)
-					for (j = 0; j < M; ++j)
-						fscanf(file,"%lf",&B[i][j]);
-			}
-			else if (f == 2)
-			{
-				printf("Reading %s for observation sequences\n",fileName);
-				fprintf(dataOutputFile,"Reading %s for observation sequences\n",fileName);
-				for (i = 0; i < 5; ++i)
-				{
-					fscanf(file,"%s %d %s",&skipLine,&k,&skipLine);
-					for (j = 0; j < T; ++j)
-						fscanf(file,"%d",&fullO[i][j]);
-				}				
-			}
-			else if (f == 3)
-			{
-				printf("Reading %s for Pi\n",fileName);
-				fprintf(dataOutputFile,"Reading %s for Pi\n",fileName);
-				for (i = 0; i < N; ++i)
-					fscanf(file,"%lf",&Pi[i]);				
-			}
-			
-			fclose(file);
-		}
-		for (i = 0; i < N; ++i)
-		{
-			O = fullO[i];
-			runForwardBackward();
-			runViterbi();
-			runBaumWelch();
-		}
-		printf("Required outputs are printed in %s\n",dataOutputFileName);
-		printf("Other information is printed in %s\n",modelOutputFileName);
-		fclose(dataOutputFile); fclose(modelOutputFile);
-	}
-
-	printf("Breakpoint\n");
-	return 0;
-
-
-////////////////////////////////////////////////////////////////////////
-Working main code for single convergence for each observation sequence
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-bool isUpdated = true;
-	int i = 0, j = 0, k = 0, r = 0, c = 0, d = 0, f = 0, t = 0, m = 0;
-	long double ** refA = NULL, ** refB = NULL; 
-	long double * refPi = NULL;
-	FILE * file = NULL;
-
-	/*Read the updated information from info.txt
-	file = fopen("Info.txt","r");
-	fscanf(file,"%d",&R);
-
-	/*define everything
-	alpha = new long double *[N];
-	beta = new long double *[N];
-
-	for (i = 0; i < N; ++i)
-		alpha[i] = new long double[T];
-	for (i = 0; i < N; ++i)
-		beta[i] = new long double[T];
-
-	delta = new long double *[N];
-	psi = new int *[N];
-	qStar = new int[T];
-	qStarComplement = new int[T];
-
-	for (i = 0; i < N; ++i)
-		delta[i] = new long double[T];
-	for (i = 0; i < N; ++i)
-		psi[i] = new int[T];
-
-	xi = new long double ** [N];
-	for (i = 0; i < N; ++i)
-		xi[i] = new long double * [N];
-	for (i = 0; i < N; ++i)
-		for (j = 0; j < N; ++j)
-			xi[i][j] = new long double[T-1];
-
-	gamma = new long double * [N];
-	for (i = 0; i < N; ++i)
-		gamma[i] = new long double[T];
-
-	PiComplement = new long double [N];
-
-	AComplement = new long double * [N];
-	for (i = 0; i < N; ++i)
-		AComplement[i] = new long double[N];
-
-	BComplement = new long double * [N];
-	for (i = 0; i < N; ++i)
-		BComplement[i] = new long double[M];
-
-	A = new long double *[N]; //A Matrix
-	B = new long double *[N]; //B Matrix
-	O = new int [N]; //Observation Sequence
-	fullO = new int *[R];
-	Pi = new long double[N]; //Pi Array
-
-	for (i = 0; i < N; ++i)
-		A[i] = new long double[N];
-	for (i = 0; i < N; ++i)
-		B[i] = new long double[M];
-	for (i = 0; i < R; ++i)
-		fullO[i] = new int[T];
-
-	refA = new long double *[N]; //A Matrix
-	refB = new long double *[N]; //B Matrix
-	refPi = new long double[N]; //Pi Array
-
-	for (i = 0; i < N; ++i)
-		refA[i] = new long double[N];
-	for (i = 0; i < N; ++i)
-		refB[i] = new long double[M];
-	
-	char * folders[] = {"ConvergenceCheck/Digit ","ConvergenceCheck/Digit ","ConvergenceCheck/Digit "};
-	char * digits[] = {"1","7","8"};
-	char * files[] = {"A_","B_","obs_seq_","Pi_"};
-
-	char * buffer = new char[1024];
-	char skipLine[1024];
-	
-	char fileName[100], AComplementFileName[100], BComplementFileName[100], PiComplementFileName[100], temp[100];
-
-	for (d = 0; d < D; ++d)
-	{
-		printf("-----------------------------------------------------------\n");
-		printf("                         Digit %s\n",digits[d]);
-		printf("-----------------------------------------------------------\n");
-		
-		for (f = 0; f < F; ++f)
-		{
-			strcpy(fileName,folders[d]);
-			strcat(fileName,digits[d]);
-			strcat(fileName,"/");
-			strcat(fileName,files[f]);
-			strcat(fileName,digits[d]);
-			strcat(fileName,".txt");
-			
-			file = fopen(fileName,"r");
-
-			if (f == 0)
-			{
-				printf("Reading %s for A matrix\n",fileName);
-				for (i = 0; i < N; ++i)
-				{
-					for (j = 0; j < N; ++j)
-					{
-						fscanf(file,"%lf",&A[i][j]);
-						refA[i][j] = A[i][j];
-					}
-				}
-			}
-			else if (f == 1)
-			{
-				printf("Reading %s for B matrix\n",fileName);
-				for (i = 0; i < N; ++i)
-				{
-					for (j = 0; j < M; ++j)
-					{
-						fscanf(file,"%lf",&B[i][j]);
-						refB[i][j] = B[i][j];
-					}
-				}
-			}
-			else if (f == 2)
-			{
-				printf("Reading %s for observation sequences\n",fileName);
-				for (i = 0; i < 5; ++i)
-				{
-					fscanf(file,"%s %d %s",&skipLine,&k,&skipLine);
-					for (j = 0; j < T; ++j)
-						fscanf(file,"%d",&fullO[i][j]);
-				}				
-			}
-			else if (f == 3)
-			{
-				printf("Reading %s for Pi\n",fileName);
-				for (i = 0; i < N; ++i)
-				{
-					fscanf(file,"%lf",&Pi[i]);
-					refPi[i] = Pi[i];				
-				}
-			}
-			
-			fclose(file);
-		}
-		for (k = 0; k < N; ++k)
-		{
-			sprintf(temp,"%d",k);
-			
-			strcpy(AComplementFileName,folders[d]);
-			strcat(AComplementFileName,digits[d]);
-			strcat(AComplementFileName,"/");
-			strcat(AComplementFileName,digits[d]);
-			strcat(AComplementFileName,"AComplement");
-			strcat(AComplementFileName,temp);
-			strcat(AComplementFileName,".txt");
-
-			strcpy(BComplementFileName,folders[d]);
-			strcat(BComplementFileName,digits[d]);
-			strcat(BComplementFileName,"/");
-			strcat(BComplementFileName,digits[d]);
-			strcat(BComplementFileName,"BComplement");
-			strcat(BComplementFileName,temp);
-			strcat(BComplementFileName,".txt");
-
-			strcpy(PiComplementFileName,folders[d]);
-			strcat(PiComplementFileName,digits[d]);
-			strcat(PiComplementFileName,"/");
-			strcat(PiComplementFileName,digits[d]);
-			strcat(PiComplementFileName,"PiComplement");
-			strcat(PiComplementFileName,temp);
-			strcat(PiComplementFileName,".txt");
-
-			AComplementFile = fopen(AComplementFileName,"w+");
-			BComplementFile = fopen(BComplementFileName,"w+");
-			PiComplementFile = fopen(PiComplementFileName,"w+");
-
-			//reset A
-			for (i = 0; i < N; ++i)
-				for (j = 0; j < N; ++j)
-					A[i][j] = refA[i][j];
-			
-			//reset B
-			for (i = 0; i < N; ++i)
-				for (m = 0; m < M; ++m)
-					B[i][m] = refB[i][m];
-			
-			//reset Pi
-			for (j = 0; j < N; ++j)
-				Pi[j] = refPi[j];
-
-			//set new O
-			O = fullO[k];
-
-			isUpdated = true;
-
-			//update new pStar
-			runViterbi(0);
-
-			//run till the model is being updated
-			while(isUpdated)
-			{
-				runForwardBackward();
-				runBaumWelch();
-				runViterbi(1);
-				isUpdated = compareAndUpdateModel();
-			}
-			
-			//print the new models to respective files
-			for (i = 0; i < N; ++i)
-			{
-				for (j = 0; j < N; ++j)
-					fprintf(AComplementFile,"%g ",A[i][j]);
-				fprintf(AComplementFile,"\n");
-			}
-			
-			for (i = 0; i < N; ++i)
-			{
-				for (m = 0; m < M; ++m)
-					fprintf(BComplementFile,"%g ",B[i][m]);
-				fprintf(BComplementFile,"\n");
-			}
-			
-			for (j = 0; j < N; ++j)
-				fprintf(PiComplementFile,"%g ",Pi[j]);
-			fprintf(PiComplementFile,"\n");
-
-			fclose(AComplementFile);
-			fclose(BComplementFile);
-			fclose(PiComplementFile);
-		}
-	}
-
-	printf("Breakpoint\n");
-	return 0;
-*/

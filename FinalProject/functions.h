@@ -452,7 +452,7 @@ void resetModel(char * folder, char * digits[], char * files[], int D, int R)
 	}
 }
 
-void recognize(char * folder, char * digits[], char * files[], char * dataFiles[], int D, int R, int range)
+void recognize(char * folder, char * digits[], char * files[], char * dataFiles[], int D, int R, int range, char * testFileName)
 {
 	int d = 0, f = 0, r = 0, i = 0, j = 0, k = 0, q = p, index = 0;
 	int xCount = duration*samplingRate, dcCount = 0, shift = 0, temp = 0, sampleSize = xCount/noOfFrames, minIndex = -1;
@@ -466,7 +466,8 @@ void recognize(char * folder, char * digits[], char * files[], char * dataFiles[
 	char fileName[200], * resultantWord = NULL;
 	FILE * file = NULL, * AFile = NULL, * BFile = NULL, * PiFile = NULL;	
 
-	file = fopen("data/o.txt","r");
+	printf("%s\n",testFileName);
+	file = fopen(testFileName,"r");
 	dcCount = 0;
 	for (i = 0; i < 1000; ++i) //for all x values
 	{
@@ -587,7 +588,7 @@ void recognize(char * folder, char * digits[], char * files[], char * dataFiles[
 
 		runForwardBackward();
 
-		printf("d = %d, %g\n",d,pOfOGivenLambda);
+		printf("d = %s, %g\n",digits[d],pOfOGivenLambda);
 		if (pOfOGivenLambda > maxProb)
 		{
 			maxProb = pOfOGivenLambda;
