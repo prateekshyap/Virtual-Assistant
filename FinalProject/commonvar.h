@@ -78,7 +78,7 @@ int M = 0; //codebook size or number of observations
 
 int T = 100; //size of observation sequence
 
-int R = 0; //read it from file, it will store the number of words currently present in the universe
+int R = 0; //read it from file, it will store the number of utterances per word currently present in the universe
 
 int duration = 0; //read it from file, it will store the duration of the recording to be considered
 
