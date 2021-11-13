@@ -14,6 +14,8 @@ using namespace std;
 #include <math.h>
 #include <string.h>
 #include <time.h>
+#include <direct.h>
+
 
 #include "commonvar.h"
 #include "lbg.h"
@@ -56,8 +58,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	char * temp = NULL;
 	int trainingStatus = -1; //set a variable to know if the model has to be trained or not
 	int buildingStatus = -1; //set a variable to know if codebook needs to be built or not
+	int readyStatus = -1;
 	char command[200];
-	char * testFileName = NULL, * userString = NULL;
+	char * testFileName = NULL, * userString = NULL, * wordToBeTrained = NULL, * filePath = NULL;
 
 	range = preProcess();
 
@@ -140,15 +143,61 @@ int _tmain(int argc, _TCHAR* argv[])
 			scanf("%s",&userString);
 			flag = 1;
 			for (i = 0; i < D; ++i)
+			{
 				if (strcmp(userString,digits[i]))
 				{
+					wordToBeTrained = digits[i];
 					flag = 0;
 					break;
 				}
+			}
 			if (flag == 0) //existing word
-			{}
+			{
+				testFileName = "data/o.txt";
+				sprintf(command,"Recording_Module.exe %d data/o.wav data/o.txt",duration);
+				std :: system(command);
+				trainModel(wordToBeTrained,range,testFileName);
+			}
 			else //new word
-			{}
+			{
+				printf("--------------Warning----------------");
+				printf("It will take a few minutes\n");
+				printf("Please record 20 times\n");
+				filePath = "HMM/";
+				strcat(filePath,userString);
+				mkdir(filePath);
+				strcat(filePath,"/");
+				for (i = 0; i < 20; ++i)
+				{
+					printf("Enter 1 when you're ready to record\n");
+					scanf("%d",&readyStatus);
+					sprintf(testFileName,"%s%d.txt",filePath,i);
+					sprintf(command,"Recording_Module.exe %d data/o.wav %s",duration,testFileName);
+					std :: system(command);
+					printf("%d files recorded\n",(i+1));
+				}
+
+				//update the set of words in file as well as in the array
+				file = fopen("data/D.txt","w");
+				++D;
+				fprintf(file,"%d\n",D);
+				for (i = 0; i < D-1; ++i)
+					fprintf(file,"%s\n",digits[i]);
+				fprintf(file,"%s\n",userString);
+				fclose(file);
+				file = fopen("data/D.txt","r");
+				digits = new char * [D];
+				for (d = 0; d < D; ++d)
+					digits[d] = (char *)malloc(sizeof(char *));
+				fscanf(file,"%d",&D);
+				for (d = 0; d < D; ++d)
+					fscanf(file,"%s",digits[d]);
+				fclose(file);
+
+				//train the model from the beginning
+				range = preProcess();
+				trainBeginningModel(0);
+			}
 			break;
 
 		case 2:
@@ -310,38 +359,8 @@ void trainBeginningModel(int buildingStatus)
 	Define variables for HMM
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 	//define everything
-	delta = new long double *[N];
-	psi = new int *[N];
-	qStar = new int[T];
-	qStarComplement = new int[T];
+	define();
 
-	for (i = 0; i < N; ++i)
-		delta[i] = new long double[T];
-	for (i = 0; i < N; ++i)
-		psi[i] = new int[T];
-
-	xi = new long double ** [N];
-	for (i = 0; i < N; ++i)
-		xi[i] = new long double * [N];
-	for (i = 0; i < N; ++i)
-		for (j = 0; j < N; ++j)
-			xi[i][j] = new long double[T-1];
-
-	gamma = new long double * [N];
-	for (i = 0; i < N; ++i)
-		gamma[i] = new long double[T];
-
-	PiComplement = new long double [N];
-
-	AComplement = new long double * [N];
-	for (i = 0; i < N; ++i)
-		AComplement[i] = new long double[N];
-
-	BComplement = new long double * [N];
-	for (i = 0; i < N; ++i)
-		BComplement[i] = new long double[M];
-
-	O = new int [N]; //Observation Sequence
 	fullO = new int *[R];
 
 	for (i = 0; i < R; ++i)

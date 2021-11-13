@@ -609,3 +609,195 @@ void recognize(char * folder, char * digits[], char * files[], char * dataFiles[
 	delete(trainingData);
 	resultWord = resultantWord;
 }
+
+void trainModel(char * word, int range, char * trainFileName)
+{
+	bool isUpdated = true;
+	int xCount = duration*samplingRate, dcCount = 0, shift = 0, temp = 0, sampleSize = xCount/noOfFrames, minIndex = -1, index = 0, codebookIndex = 0, updationLimit = 0;
+	char * buffer = new char[1024];
+	double * x = new double[xCount], * RR = NULL, * AA = NULL, * C = NULL, * trainingData = new double[sampleSize];
+	double DCShift = 0, maxData = 0, minData = 0, normalizationFactor = 0, copy = 0;
+	O = new int[noOfFrames];
+	long double * distances = new long double[M]; //stores the tokhura distances
+	long double w[] = {1.0,3.0,7.0,13.0,19.0,22.0,25.0,33.0,42.0,50.0,56.0,61.0}; //given Tokhura weights
+	long double min = 1e30, temp1 = 0, temp2 = 0;
+
+	int i = 0, j = 0, r = 0, dcCount = 0;
+	char * filePath = "HMM/";
+	strcat(filePath,word);
+	strcat(filePath,"/");
+	char * fileName = NULL;
+
+	//define variables
+	define();
+
+	//read the current model for the given word
+	strcpy(fileName,filePath);
+	strcat(fileName,"A.txt");
+	FILE * file = fopen(fileName,"r");
+
+	for (i = 0; i < N; ++i)
+		for (j = 0; j < N; ++j)
+			fscanf(file,"%lf",&A[i][j]);
+
+	fclose(file);
+
+	strcpy(fileName,filePath);
+	strcat(fileName,"B.txt");
+	file = fopen(fileName,"r");
+
+	for (i = 0; i < N; ++i)
+		for (j = 0; j < M; ++j)
+			fscanf(file,"%lf",&B[i][j]);
+
+	fclose(file);
+
+	strcpy(fileName,filePath);
+	strcat(fileName,"Pi.txt");
+	file = fopen(fileName,"r");
+
+	for (i = 0; i < N; ++i)
+		fscanf(file,"%lf",&Pi[i]);
+
+	fclose(file);
+
+	//generate observation sequence for the spoken word
+	file = fopen(trainFileName,"r");
+	dcCount = 0;
+	for (i = 0; i < 1000; ++i) //for all x values
+	{
+		fgets(buffer, 1024, file); //read one line from the file
+		x[i] = atof(buffer); //convert it into float
+		DCShift += x[i]; ++dcCount; //add it to dc shift
+	}
+	DCShift /= dcCount; //find out dcshift
+	for (i = 0; i < 1000; ++i)
+	{
+		x[i] -= DCShift; //subtract dcshift from already stored values
+		if (x[i] > maxData) maxData = x[i]; //update maxData
+		if (x[i] < minData) minData = x[i]; //update minData
+	}
+	for (i = 1000; i < xCount; ++i) //for rest values
+	{
+		fgets(buffer, 1024, file); //read one line from the file
+		x[i] = atof(buffer); //convert it into float
+		x[i] -= DCShift; //subtract dcshift
+		if (x[i] > maxData) maxData = x[i]; //update maxData
+		if (x[i] < minData) minData = x[i]; //update minData
+	}
+	fclose(file);
+
+	//find out normalization factor
+	minData = abs(minData); //get the absolute value of the minimum
+	normalizationFactor = range/((maxData+minData)/2); //get the normalization factor
+
+	//truncate the normalizationFactor to one decimal digit
+	copy = normalizationFactor; //store the normalizationFactor in copy
+	while (copy < 1) //till copy is less than 1
+	{
+		++shift; //increment shift
+		copy *= 10; //keep multiplying copy with 10
+	}
+	temp = (int)copy; //store the integer part of copy in temp
+	copy -= temp; //subtract temp from copy
+	while (shift-- > 0) //reverse the shift process
+		copy /= 10;
+	/*the above process helps in getting all the digits except the first decimal digit*/
+	normalizationFactor -= copy; //subtract copy from normalizationFactor
+	/*this will ensure that only one digit remains after decimal point*/
+
+	//multiply normalization factor
+	for (i = 0; i < xCount; ++i)
+		x[i] *= normalizationFactor;
+
+	index = 0;
+	for (r = 0; r < noOfFrames; ++r) //indicates frame number
+	{
+		for (i = 0; i < sampleSize; ++i)
+			trainingData[i] = x[index++];
+
+		RR = getRValues(trainingData,sampleSize,p);
+		AA = getAValues(RR,sampleSize,p);
+		C = getCValues(AA,sampleSize,p,RR[0]);
+			
+		//raised sine window on C and adding it to the universe file
+		for (j = 1; j <= p; ++j)
+			C[j] *= 1+((q/2)*sin((3.14*j)/q));
+
+		//Tokhura Distance from codebook
+		file = fopen("data/codebook.txt","r");
+		for (j = 0; j < M; ++j) //for each vector in the codebook
+		{
+			distances[j] = 0;
+			for (k = 0; k < p; ++k) //for each p value
+			{
+				temp1 = (long double)C[k+1];
+				fscanf(file,"%lf",&temp2);
+				distances[j] += w[k]*(temp1-temp2)*(temp1-temp2); //find out the distance
+			}
+		}
+		fclose(file);
+		//Minimum index
+		min = 1e30; //reset the minimum
+		for (j = 0; j < M; ++j)
+		{
+			if (min > distances[j])
+			{
+				min = distances[j];
+				minIndex = j;
+			}
+		}
+
+		O[r] = minIndex+1; //+1 is done to maintain the 1-32 range format and not 0-31 since this subtraction is being done at later steps
+	}
+
+	//train the model
+	isUpdated = true;
+
+	//update new pStar
+	runViterbi(0);
+	updationLimit = 0;
+
+	//run till the model is being updated
+	while(isUpdated && updationLimit++ <= 200)
+	{
+		runForwardBackward();
+		runBaumWelch();
+		runViterbi(1);
+		isUpdated = compareAndUpdateModel();
+	}
+			
+	//print the new models to respective files
+	strcpy(fileName,filePath);
+	strcat(fileName,"A.txt");
+	file = fopen(fileName,"w");
+
+	for (i = 0; i < N; ++i)
+	{
+		for (j = 0; j < N; ++j)
+			fprintf(file,"%g ",A[i][j]);
+		fprintf(file,"\n");
+	}
+	fclose(file);
+			
+	strcpy(fileName,filePath);
+	strcat(fileName,"B.txt");
+	file = fopen(fileName,"w");
+
+	for (i = 0; i < N; ++i)
+	{
+		for (m = 0; m < M; ++m)
+			fprintf(file,"%g ",B[i][m]);
+		fprintf(file,"\n");
+	}
+	fclose(file);
+			
+	strcpy(fileName,filePath);
+	strcat(fileName,"Pi.txt");
+	file = fopen(fileName,"w");
+
+	for (j = 0; j < N; ++j)
+		fprintf(file,"%g ",Pi[j]);
+	fprintf(file,"\n");
+	fclose(file);
+}

@@ -102,6 +102,53 @@ FILE * PiComplementFile = NULL; //new Pi will be printed
 
 
 
+/*
+///////////////////////////////////////
+Defining variables
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+
+void define()
+{
+	int i = 0, j = 0;
+	delta = new long double *[N];
+	psi = new int *[N];
+	qStar = new int[T];
+	qStarComplement = new int[T];
+
+	for (i = 0; i < N; ++i)
+		delta[i] = new long double[T];
+	for (i = 0; i < N; ++i)
+		psi[i] = new int[T];
+
+	xi = new long double ** [N];
+	for (i = 0; i < N; ++i)
+		xi[i] = new long double * [N];
+	for (i = 0; i < N; ++i)
+		for (j = 0; j < N; ++j)
+			xi[i][j] = new long double[T-1];
+
+	gamma = new long double * [N];
+	for (i = 0; i < N; ++i)
+		gamma[i] = new long double[T];
+
+	PiComplement = new long double [N];
+
+	AComplement = new long double * [N];
+	for (i = 0; i < N; ++i)
+		AComplement[i] = new long double[N];
+
+	BComplement = new long double * [N];
+	for (i = 0; i < N; ++i)
+		BComplement[i] = new long double[M];
+
+	O = new int [N]; //Observation Sequence
+}
+
+
+
+
+
 
 
 
