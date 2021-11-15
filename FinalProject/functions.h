@@ -101,11 +101,7 @@ void buildUniverse(char * folder, char * digits[], char * files[], int D, int R,
 	{		
 		for (f = 0; f < R; ++f)
 		{
-			strcpy(fileName,folder);
-			strcat(fileName,digits[d]);
-			strcat(fileName,"/");
-			strcat(fileName,files[f]);
-			strcat(fileName,".txt");
+			sprintf(fileName,"%s%s/%s.txt",folder,digits[d],files[f]);
 
 			file = fopen(fileName,"r");
 			dcCount = 0;
@@ -246,28 +242,24 @@ bool compareAndUpdateModel()
 	}
 }
 
-void generateObservationSequences(char * folder, char * digits[], char * files[], int digitIndex, int R, int range)
+void generateObservationSequences(char * folder, char * digits[], char * files[], int digitIndex, int F, int range)
 {
 	int f = 0, r = 0, i = 0, j = 0, k = 0, q = p, index = 0, codeBookIndex = 0;
 	int xCount = duration*samplingRate, dcCount = 0, shift = 0, temp = 0, sampleSize = xCount/noOfFrames, minIndex = -1;
 	char * buffer = new char[1024];
 	double * x = new double[xCount], * RR = NULL, * AA = NULL, * C = NULL, * trainingData = new double[sampleSize];
 	double DCShift = 0, maxData = 0, minData = 0, normalizationFactor = 0, copy = 0;
-	int ** Ob = new int*[R];
+	int ** Ob = new int*[F];
 	long double * distances = new long double[M]; //stores the tokhura distances
 	long double w[] = {1.0,3.0,7.0,13.0,19.0,22.0,25.0,33.0,42.0,50.0,56.0,61.0}; //given Tokhura weights
 	long double min = 1e30, temp1 = 0, temp2 = 0;
 	char fileName[100];
 	FILE * file = NULL;
-	for (i = 0; i < R; ++i)
+	for (i = 0; i < F; ++i)
 		Ob[i] = new int[noOfFrames];	
-	for (f = 0; f < R; ++f)
+	for (f = 0; f < F; ++f)
 	{
-		strcpy(fileName,folder);
-		strcat(fileName,digits[digitIndex]);
-		strcat(fileName,"/");
-		strcat(fileName,files[f]);
-		strcat(fileName,".txt");
+		sprintf(fileName,"%s%s/%d.txt",folder,digits[digitIndex],f);
 
 		file = fopen(fileName,"r");
 		dcCount = 0;
@@ -359,13 +351,9 @@ void generateObservationSequences(char * folder, char * digits[], char * files[]
 		}
 	}
 
-	strcpy(fileName,folder);
-	strcat(fileName,digits[digitIndex]);
-	strcat(fileName,"/");
-	strcat(fileName,"O");
-	strcat(fileName,".txt");
+	sprintf(fileName,"%s%s/O.txt",folder,digits[digitIndex]);
 	file = fopen(fileName,"w+");
-	for (i = 0; i < R; ++i)
+	for (i = 0; i < F; ++i)
 	{
 		for (j = 0; j < noOfFrames; ++j)
 		{
@@ -383,6 +371,22 @@ void generateObservationSequences(char * folder, char * digits[], char * files[]
 	delete(trainingData);
 }
 
+void resetCount(char * folder, char * digits[], char * files[], int D, int R)
+{
+	int d = 0;
+	char fileName[100];
+	FILE * countFile = NULL;
+	for (d = 0; d < D; ++d)
+	{
+		sprintf(fileName,"%s%s/count.txt",folder,digits[d]);
+		countFile = fopen(fileName,"w");
+
+		fprintf(countFile,"%d\n",R);
+
+		fclose(countFile);
+	}
+}
+
 void resetModel(char * folder, char * digits[], char * files[], int D, int R)
 {
 	int d = 0, k = 0, i = 0, j = 0;
@@ -395,25 +399,13 @@ void resetModel(char * folder, char * digits[], char * files[], int D, int R)
 	row[2] = row[3] = row[4] = 0;
 	for (d = 0; d < D; ++d)
 	{
-		strcpy(fileName,folder);
-		strcat(fileName,digits[d]);
-		strcat(fileName,"/");
-		strcat(fileName,"A");
-		strcat(fileName,".txt");
+		sprintf(fileName,"%s%s/A.txt",folder,digits[d]);
 		AFile = fopen(fileName,"w");
 
-		strcpy(fileName,folder);
-		strcat(fileName,digits[d]);
-		strcat(fileName,"/");
-		strcat(fileName,"B");
-		strcat(fileName,".txt");
+		sprintf(fileName,"%s%s/B.txt",folder,digits[d]);
 		BFile = fopen(fileName,"w");
 
-		strcpy(fileName,folder);
-		strcat(fileName,digits[d]);
-		strcat(fileName,"/");
-		strcat(fileName,"Pi");
-		strcat(fileName,".txt");
+		sprintf(fileName,"%s%s/Pi.txt",folder,digits[d]);
 		PiFile = fopen(fileName,"w");
 
 		tempB = 0.03125, one = 1, zero = 0;
@@ -613,53 +605,52 @@ void recognize(char * folder, char * digits[], char * files[], char * dataFiles[
 void trainModel(char * word, int range, char * trainFileName)
 {
 	bool isUpdated = true;
-	int xCount = duration*samplingRate, dcCount = 0, shift = 0, temp = 0, sampleSize = xCount/noOfFrames, minIndex = -1, index = 0, codebookIndex = 0, updationLimit = 0;
+	int xCount = duration*samplingRate, dcCount = 0, shift = 0, temp = 0, q = p, sampleSize = xCount/noOfFrames, minIndex = -1, index = 0, codebookIndex = 0, updationLimit = 0, currCount = -1;
 	char * buffer = new char[1024];
 	double * x = new double[xCount], * RR = NULL, * AA = NULL, * C = NULL, * trainingData = new double[sampleSize];
 	double DCShift = 0, maxData = 0, minData = 0, normalizationFactor = 0, copy = 0;
 	O = new int[noOfFrames];
 	long double * distances = new long double[M]; //stores the tokhura distances
 	long double w[] = {1.0,3.0,7.0,13.0,19.0,22.0,25.0,33.0,42.0,50.0,56.0,61.0}; //given Tokhura weights
-	long double min = 1e30, temp1 = 0, temp2 = 0;
-
-	int i = 0, j = 0, r = 0, dcCount = 0;
-	char * filePath = "HMM/";
-	strcat(filePath,word);
-	strcat(filePath,"/");
-	char * fileName = NULL;
+	long double min = 1e30, temp1 = 0, temp2 = 0, tempValue = 0;
+	FILE * file = NULL;
+	
+	int i = 0, j = 0, r = 0, k = 0, m = 0;
+	char filePath[128];
+	sprintf(filePath,"HMM/%s/",word);
+	char fileName[256];
 
 	//define variables
 	define();
 
-	//read the current model for the given word
-	strcpy(fileName,filePath);
-	strcat(fileName,"A.txt");
-	FILE * file = fopen(fileName,"r");
+	//set A B and Pi to Bakis model
+	long double * row = new long double[N];
+	long double tempB = 0.03125, one = 1, zero = 0;
+	row[0] = 0.8;
+	row[1] = 0.2;
+	row[2] = row[3] = row[4] = 0;
 
-	for (i = 0; i < N; ++i)
+	for (i = 0; i < N-1; ++i)
+	{
 		for (j = 0; j < N; ++j)
-			fscanf(file,"%lf",&A[i][j]);
-
-	fclose(file);
-
-	strcpy(fileName,filePath);
-	strcat(fileName,"B.txt");
-	file = fopen(fileName,"r");
+			A[i][j] = row[j];
+		for (j = N-2; j >= 0; --j)
+			row[j+1] = row[j];
+		row[0] = 0;
+	}
+	for (i = 0; i < N-1; ++i)
+		A[N-1][i] = zero;
+	A[N-1][N-1] = one;
 
 	for (i = 0; i < N; ++i)
+	{
 		for (j = 0; j < M; ++j)
-			fscanf(file,"%lf",&B[i][j]);
+			B[i][j] = tempB;
+	}
 
-	fclose(file);
-
-	strcpy(fileName,filePath);
-	strcat(fileName,"Pi.txt");
-	file = fopen(fileName,"r");
-
-	for (i = 0; i < N; ++i)
-		fscanf(file,"%lf",&Pi[i]);
-
-	fclose(file);
+	Pi[0] = 1;
+	for (i = 1; i < N; ++i)
+		Pi[i] = 0;
 
 	//generate observation sequence for the spoken word
 	file = fopen(trainFileName,"r");
@@ -769,35 +760,137 @@ void trainModel(char * word, int range, char * trainFileName)
 			
 	//print the new models to respective files
 	strcpy(fileName,filePath);
+	strcat(fileName,"count.txt");
+	file = fopen(fileName,"r");
+	fscanf(file,"%d",&currCount);
+	fclose(file);
+
+	file = fopen(fileName,"w");
+	fprintf(file,"%d\n",(currCount+1));
+	fclose(file);
+
+	strcpy(fileName,filePath);
 	strcat(fileName,"A.txt");
+
+	file = fopen(fileName,"r");
+
+	for (i = 0; i < N; ++i)
+		for (j = 0; j < N; ++j)
+			fscanf(file,"%lf",&AComplement[i][j]);
+
+	fclose(file);
+
 	file = fopen(fileName,"w");
 
 	for (i = 0; i < N; ++i)
 	{
 		for (j = 0; j < N; ++j)
-			fprintf(file,"%g ",A[i][j]);
+		{
+			tempValue = ((currCount*AComplement[i][j])+A[i][j])/(currCount+1);
+			fprintf(file,"%g ",tempValue);
+		}
 		fprintf(file,"\n");
 	}
 	fclose(file);
 			
 	strcpy(fileName,filePath);
 	strcat(fileName,"B.txt");
+	
+	file = fopen(fileName,"r");
+
+	for (i = 0; i < N; ++i)
+		for (j = 0; j < M; ++j)
+			fscanf(file,"%lf",&BComplement[i][j]);
+
+	fclose(file);
+
 	file = fopen(fileName,"w");
 
 	for (i = 0; i < N; ++i)
 	{
 		for (m = 0; m < M; ++m)
-			fprintf(file,"%g ",B[i][m]);
+		{
+			tempValue = ((currCount*BComplement[i][m])+B[i][m])/(currCount+1);
+			fprintf(file,"%g ",tempValue);
+		}
 		fprintf(file,"\n");
 	}
 	fclose(file);
 			
 	strcpy(fileName,filePath);
 	strcat(fileName,"Pi.txt");
+
+	file = fopen(fileName,"r");
+
+	for (i = 0; i < N; ++i)
+		fscanf(file,"%lf",&PiComplement[i]);
+
+	fclose(file);
+
 	file = fopen(fileName,"w");
 
 	for (j = 0; j < N; ++j)
-		fprintf(file,"%g ",Pi[j]);
+	{
+		tempValue = ((currCount*PiComplement[j])+Pi[j])/(currCount+1);
+		fprintf(file,"%g ",tempValue);
+	}
 	fprintf(file,"\n");
+	fclose(file);
+}
+
+void writeGeneralModel(char * filePath, int R)
+{
+	char fileName[256];
+	FILE * file = NULL;
+	int d = 0, k = 0, i = 0, j = 0;
+	long double * row = new long double[N];
+	long double tempB = 0.03125, one = 1, zero = 0;
+	row[0] = 0.8;
+	row[1] = 0.2;
+	row[2] = row[3] = row[4] = 0;
+
+	sprintf(fileName,"%s/A.txt",filePath);
+	file = fopen(fileName,"w");
+
+	for (i = 0; i < N-1; ++i)
+	{
+		for (j = 0; j < N; ++j)
+			fprintf(file,"%g ",row[j]);
+		fprintf(file,"\n");
+		for (j = N-2; j >= 0; --j)
+			row[j+1] = row[j];
+		row[0] = 0;
+	}
+	for (i = 0; i < N-1; ++i)
+		fprintf(file,"%g ",zero);
+	fprintf(file,"%g \n",one);
+
+	fclose(file);
+
+	sprintf(fileName,"%s/B.txt",filePath);
+	file = fopen(fileName,"w");
+
+	for (i = 0; i < N; ++i)
+	{
+		for (j = 0; j < M; ++j)
+			fprintf(file,"%g ",tempB);
+		fprintf(file,"\n");
+	}
+
+	fclose(file);
+
+	sprintf(fileName,"%s/Pi.txt",filePath);
+	file = fopen(fileName,"w");
+
+	fprintf(file,"%g ",one);
+	for (i = 1; i < N; ++i)
+		fprintf(file,"%g ",zero);
+	fprintf(file,"\n");
+
+	fclose(file);
+
+	sprintf(fileName,"%s/count.txt",filePath);
+	file = fopen(fileName,"w");
+	fprintf(file,"%d\n",R);
 	fclose(file);
 }

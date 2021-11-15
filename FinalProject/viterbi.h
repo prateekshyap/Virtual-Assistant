@@ -26,7 +26,7 @@ void runViterbi(int status)
 		{
 			for (j = 0; j < N; ++j)
 			{
-				delta[j][t] = 0; //suspicious
+				delta[j][t] = (long double)INT_MIN; //suspicious
 				psi[j][t] = -1;
 				for (i = 0; i < N; ++i)
 				{
@@ -43,7 +43,7 @@ void runViterbi(int status)
 
 		//termination
 		qStar[T-1] = -1;
-		pStar = 0;
+		pStar = (long double)INT_MIN;
 		for (i = 0; i < N; ++i)
 		{
 			if (delta[i][T-1] >= pStar) //suspicious
@@ -73,7 +73,7 @@ void runViterbi(int status)
 		{
 			for (j = 0; j < N; ++j)
 			{
-				delta[j][t] = 0; //suspicious
+				delta[j][t] = (long double)INT_MIN; //suspicious
 				psi[j][t] = -1;
 				for (i = 0; i < N; ++i)
 				{
@@ -90,7 +90,7 @@ void runViterbi(int status)
 
 		//termination
 		qStarComplement[T-1] = -1;
-		pStarComplement = 0;
+		pStarComplement = (long double)INT_MIN;
 		for (i = 0; i < N; ++i)
 		{
 			if (delta[i][T-1] >= pStarComplement) //suspicious
